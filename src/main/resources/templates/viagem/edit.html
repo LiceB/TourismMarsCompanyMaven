@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Editar Viagem</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/viagem">Fiap</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#mynavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="mynavbar">
+				<ul class="navbar-nav me-auto">
+					<li class="nav-item"><a class="nav-link" href="/viagem/create">Criar
+							Viagem</a></li>
+					<li class="nav-item"><a class="nav-link" href="/viagem">Listar
+							Viagem</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/viagem/edit/402">Alterar Viagem</a></li>
+				</ul>
+				<form class="d-flex">
+					<div style="float: right;">
+						<p class="text-white" th:text="${nome}"></p>
+					</div>
+				</form>
+			</div>
+		</div>
+	</nav>
+	
+	<ul id="erros"></ul>
+
+	<form method="put" action="/viagem/edit/{id}" id="frmViagem"
+		class="mt-3">
+		<input type="hidden" name="id" th:value="${viagem.id}" />
+		<h3>Editar uma Viagem</h3>
+		<hr>
+		<div class="row">
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Data Decolagem:</label> <input type="text"
+					class="form-control" name="dateDecolagem" id="dateDecolagem"
+					th:value="${viagem.dateDecolagem}">
+
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Duração Estadia:</label> <input class="form-control"
+					type="number" name="estadia" id="estadia"
+					th:value="${viagem.estadia}" />
+
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Assento:</label> <input class="form-control" type="number"
+					name="assento" id="assento" th:value="${viagem.assento}" />
+
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Gerar Modelo</label> <input class="form-control" type="text"
+					name="modeloNave" id="modeloNave" readonly="readonly"
+					th:value="${viagem.modeloNave}" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Primeiro Comandante:</label> <input class="form-control"
+					type="text" name="primeiroComandante" id="primeiroComandante"
+					th:value="${viagem.primeiroComandante}">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 form-group offset-md-3">
+				<label for="codigo1">Gerar 1ª Matricula</label> <input
+					class="form-control" type="text" name="matriculaComandante1"
+					id="matriculaComandante1" readonly="readonly"
+					th:value="${viagem.matriculaComandante1}" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Segundo Comandante:</label> <input class="form-control"
+					type="text" name="segundoComandante" id="segundoComandante"
+					th:value="${viagem.segundoComandante}">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Gerar 2ª Matricula:</label> <input class="form-control"
+					type="text" name="matriculaComandante2" id="matriculaComandante2"
+					readonly="readonly" th:value="${viagem.matriculaComandante2}" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 form-group offset-md-3">
+				<input type="submit" value="Salvar" class="btn btn-primary mt-2"
+					onclick="save()">
+			</div>
+		</div>
+	</form>
+</body>
+<script>
+	let responseEntity; 
+	
+	function save()
+	{
+		const form = document.getElementById("frmViagem");
+		const formData = new FormData(form);
+		const jsonBody = JSON.stringify(Object.fromEntries(formData.entries()));
+		const header = new Headers();
+		header.append("Content-Type", "application/json");
+		
+		const requestOption ={
+			method: 'PUT',
+			headers: header, 
+			body: jsonBody
+		};
+		
+		fetch('/viagem/edit', requestOption)
+		.then(response => {
+			responseEntity = response;
+			return response.json();
+		})
+		.then(data => tratrarRedirect(data))
+		.catch(error => console.log(error));
+	}
+	
+	function tratrarRedirect(data){
+		if(responseEntity.ok){
+			alert('Viagem atualizada com sucesso');
+			window.location.href= '/viagem';
+			return; 
+		}
+		
+		let listErros = document.getElementById('erros');
+		listErros.innerHTML = '';
+		let itemListError = '';
+		
+		if(data.hasOwnProperty('dateDecolagem'))
+			itemListError = `<li class='text-danger'>${data.dateDecolagem}</li>`;
+			
+		if(data.hasOwnProperty('estadia'))
+			itemListError += `<li class='text-danger'>${data.estadia}</li>`;
+			
+		if(data.hasOwnProperty('assentos'))
+			itemListError += `<li class='text-danger'>${data.assentos}</li>`;
+			
+		if(data.hasOwnProperty('modeloNave'))
+			itemListError += `<li class='text-danger'>${data.modeloNave}</li>`;
+				
+		if(data.hasOwnProperty('primeiroComandante'))
+			itemListError += `<li class='text-danger'>${data.primeiroComandante}</li>`;
+					
+		if(data.hasOwnProperty('matriculaComandante1'))
+			itemListError += `<li class='text-danger'>${data.matriculaComandante1}</li>`;
+						
+		if(data.hasOwnProperty('segundoComandante'))
+			itemListError += `<li class='text-danger'>${data.segundoComandante}</li>`;
+			
+		if(data.hasOwnProperty('matriculaComandante2'))
+			itemListError += `<li class='text-danger'>${data.matriculaComandante2}</li>`;
+				
+		listErros.innerHTML = itemListError;
+	}
+</script>
+</html>
