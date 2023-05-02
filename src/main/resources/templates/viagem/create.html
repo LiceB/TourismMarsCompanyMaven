@@ -59,7 +59,10 @@
 		<div class="row">
 			<div class="col-md-6 form-group offset-md-3">
 				<label>Assento:</label> <input class="form-control" type="number"
-					name="assento" id="assento" placeholder="6" />
+					name="assento" min="3" max="100" id="assento" placeholder="6"
+					step="3"
+					onkeydown="return event.keyCode === 38 || event.keyCode === 40"
+					oninput="validity.valid||(value='');" />
 
 			</div>
 		</div>
@@ -73,20 +76,27 @@
 		</div>
 		<div class="row">
 			<div class="col-md-6 form-group offset-md-3">
-				<label for="codigo1">País Primeiro</label> <input class="form-control"
-					type="text" name="paisPrimeiro" id="paisPrimeiro" style="text-transform: capitalize;"
+				<label for="codigo1">País Primeiro</label> <input
+					class="form-control" type="text" name="paisPrimeiro"
+					id="paisPrimeiro" style="text-transform: capitalize;"
 					onblur="buscarISO(document.getElementById('paisPrimeiro').value)">
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-6 form-text offset-md-3">
-				Para que matrícula seja gerada de forma correta, digite o nome do País em Inglês antes de Gerar a mesma.
-			</div>
+			<div class="col-md-6 form-text offset-md-3">Para que matrícula
+				seja gerada de forma correta, digite o nome do País em Inglês antes
+				de Gerar a mesma.</div>
 		</div>
 		<div class="row">
 			<div class="col-md-6 form-group offset-md-3">
 				<label>Primeiro Comandante:</label> <input class="form-control"
 					type="text" name="primeiroComandante" id="primeiroComandante">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Ano de nascimento</label> <input class="form-control"
+					type="text" name="nascimentoPrimeiro" id="nascimentoPrimeiro">
 			</div>
 		</div>
 		<div class="row">
@@ -98,28 +108,29 @@
 					class="btn btn-dark mt-2" id="botao1">Gerar</button>
 			</div>
 		</div>
-		<!--  <div class="row">
-			<div class="col-md-6 form-group offset-md-3">
-				<label>Ano de nascimento</label> <input class="form-control"
-					type="text" name="nascimentoPrimeiro" id="nascimentoPrimeiro">
-			</div>
-		</div> -->
 		<div class="row">
 			<div class="col-md-6 form-group offset-md-3">
-				<label for="codigo1">País Secundo</label> <input class="form-control"
-					type="text" name="paisSegundo" id="paisSegundo" style="text-transform: capitalize;"
+				<label for="codigo1">País Secundo</label> <input
+					class="form-control" type="text" name="paisSegundo"
+					id="paisSegundo" style="text-transform: capitalize;"
 					onblur="buscarISO(document.getElementById('paisSegundo').value)">
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-6 form-text offset-md-3">
-				Para que matrícula seja gerada de forma correta, digite o nome do País em Inglês antes de Gerar a mesma.
-			</div>
+			<div class="col-md-6 form-text offset-md-3">Para que matrícula
+				seja gerada de forma correta, digite o nome do País em Inglês antes
+				de Gerar a mesma.</div>
 		</div>
 		<div class="row">
 			<div class="col-md-6 form-group offset-md-3">
 				<label>Segundo Comandante:</label> <input class="form-control"
 					type="text" name="segundoComandante" id="segundoComandante">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Ano de nascimento:</label> <input class="form-control"
+					type="number" name="nascimentoSegundo" id="nascimentoSegundo" />
 			</div>
 		</div>
 		<div class="row">
@@ -133,7 +144,8 @@
 		</div>
 		<div class="row">
 			<div class="col-md-6 form-group offset-md-3">
-				<input type="submit" value="Salvar" class="btn btn-primary mt-2 mb-2">
+				<input type="submit" value="Salvar"
+					class="btn btn-primary mt-2 mb-2">
 			</div>
 		</div>
 	</form>
@@ -172,7 +184,9 @@
 		codigo += '-';
 
 		// código para gerar ano de nascimento aleatorio entre 1960 e 1990
-		codigo += (Math.floor(Math.random() * 31) + 1960);
+		//codigo += (Math.floor(Math.random() * 31) + 1960);
+		const nascimento = document.getElementById('nascimentoPrimeiro').value
+		codigo += nascimento;
 
 		codigo += '-'
 				+ letras.charAt(Math.floor(Math.random() * letras.length))
@@ -192,7 +206,9 @@
 		codigo += '-';
 		
 		// código para gerar ano de nascimento aleatorio entre 1960 e 1990
-		codigo += (Math.floor(Math.random() * 31) + 1960);
+		//codigo += (Math.floor(Math.random() * 31) + 1960);
+		const nascimento = document.getElementById('nascimentoSegundo').value;
+		codigo += nascimento;
 
 		codigo += '-'
 				+ letras.charAt(Math.floor(Math.random() * letras.length))

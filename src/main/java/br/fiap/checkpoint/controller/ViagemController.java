@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import br.fiap.checkpoint.model.Viagem;
 import br.fiap.checkpoint.repository.ViagemRepository;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/viagem")
@@ -52,7 +53,7 @@ public class ViagemController {
 	}
 	
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<Viagem> edit(@RequestBody Viagem objViagem) {
+	public ResponseEntity<Viagem> edit(@Valid @RequestBody Viagem objViagem) {
 		objViagem.setDateDecolagem(objViagem.getDateDecolagem());
 		objViagem.setAssento(objViagem.getAssento());
 		objViagem.setPrimeiroComandante(objViagem.getPrimeiroComandante());

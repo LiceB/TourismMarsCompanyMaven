@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
@@ -19,36 +20,50 @@ public class Viagem {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@NotBlank
 	@Pattern(regexp = "[0-9]{2}[/][0-9]{2}[/][0-9]{4}")
 	private String dateDecolagem;
+	
+	@NotBlank
 	private String estadia;
 
+	@NotBlank
 	private String retorno;
 
+	@NotBlank
 	@Min(value = 3, message = "A quantidade de assentos precisa ser multiplo de 3")
 	private String assento;
 
+	@NotBlank
 	@Column(name = "modelo_nave")
 	@Pattern(regexp = "[a-zA-Z]{4}[-][0-9]{4}")
 	private String modeloNave;
 
+	@NotBlank
 	private String primeiroComandante;
 
+	@NotBlank
 	@Pattern(regexp = "[a-zA-Z]{3}[-][0-9]{4}[-][a-zA-Z][0-9][a-zA-Z]")
 	private String matriculaComandante1;
 
+	@NotBlank
 	private String paisPrimeiro;
-
+	
+	@NotBlank
 	@Pattern(regexp = "[0-9]{4}")
 	private String nascimentoPrimeiro;
 
+	@NotBlank
 	private String segundoComandante;
 
+	@NotBlank
 	@Pattern(regexp = "[a-zA-Z]{3}[-][0-9]{4}[-][a-zA-Z][0-9][a-zA-Z]")
 	private String matriculaComandante2;
 
+	@NotBlank
 	private String paisSegundo;
 
+	@NotBlank
 	@Pattern(regexp = "[0-9]{4}")
 	private String nascimentoSegundo;
 
